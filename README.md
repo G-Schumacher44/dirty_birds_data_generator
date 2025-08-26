@@ -17,7 +17,7 @@
 
 Dirty Birds is a synthetic data generator that simulates penguin tagging and monitoring programs for ecological analysis, QA testing, and model prototyping. The generator includes customizable randomness, optional messiness injection, and supports resight logic to mimic longitudinal tracking studies.
 
->📸 See it in action: [Dirty Birds Case Study](https://github.com/G-Schumacher44/dirty_birds_case_study)
+
 
 ___
 
