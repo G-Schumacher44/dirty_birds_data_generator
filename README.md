@@ -72,9 +72,6 @@ This repository contains the core components for generating and testing syntheti
 - **`penguin_synthetic_generator_v0.3.0.py`**  
   The main generator script. Outputs clean and messy datasets simulating penguin tagging records, including longitudinal resight logic.
 
-- **`synthetic_penguins_v3.5.csv`**  
-  A sample output CSV including noise, reobservations, and controlled missingness — intended for QA, testing, or modeling.
-
 - **`tests/`**  
   A minimal test suite to validate output structure, missing values, and column integrity.
 
