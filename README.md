@@ -166,13 +166,53 @@ Behind this generator is a layer of ecological research: peer-reviewed literatur
 
 ### 📦 Dev Setup
 
+To get the project set up for local development, follow these steps.
+
+1.  **Prerequisites**
+    - Python 3.8 or newer
+    - Git
+
+2.  **Clone the Repository**
+    ```bash
+    git clone https://github.com/G-Schumacher44/dirty_birds_data_generator.git
+    cd dirty_birds_data_generator
+    ```
+
+3.  **Create a Virtual Environment**
+    It's highly recommended to use a virtual environment to manage dependencies.
+    ```bash
+    # For macOS/Linux
+    python3 -m venv venv
+    source venv/bin/activate
+
+    # For Windows
+    python -m venv venv
+    .\venv\Scripts\activate
+    ```
+
+4.  **Install Dependencies**
+    This project uses `pandas` and `numpy`. Create a `requirements.txt` file (if it doesn't exist) with the following content, then run the `pip install` command from your activated virtual environment.
+    ```txt
+    pandas
+    numpy
+    ```
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 ___
 
 ### ▶️ CLI Usage
 
+The generator is run directly from the command line. To run the script with its default configuration, simply execute the Python file. This will generate `synthetic_penguins_v3.5_clean.csv` and `synthetic_penguins_v3.5.csv`.
 
-___
+```bash
+python penguin_synthetic_generator_v0.3.0.py
+```
+
+#### Customizing the Output
+
+Currently, all configuration is handled via constants within the `penguin_synthetic_generator_v0.3.0.py` script. To change the output, you must edit the file directly. Key parameters to modify include `N_PENGUINS`, `TAGGED_PERCENTAGE`, the `mess_level` passed to `inject_mess()`, and the `duplicate_rate` for resights.
 
 ## 🧪 Testing and Validation Guide
 
