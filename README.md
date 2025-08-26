@@ -5,9 +5,10 @@
 </p>
 
 <p align="center">
+  <img alt="Python Version" src="https://img.shields.io/badge/python-3.8+-blue.svg">
   <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue">
   <img alt="Status" src="https://img.shields.io/badge/status-alpha-lightgrey">
-  <img alt="Version" src="https://img.shields.io/badge/version-v0.1.0-blueviolet">
+  <img alt="Version" src="https://img.shields.io/badge/version-v0.3.0-blueviolet">
 </p>
 
 ---
@@ -105,7 +106,31 @@ The goal was not just to replicate a dataset — but to simulate real-world cons
 
 ### ✅ v0.3.0 (Current)
 
+This version introduces significant enhancements to the data generation logic, focusing on deeper ecological realism and more complex data quality challenges.
 
+**✨ New Features**
+
+- **Clutch & Egg-Laying Logic**: The generator now simulates clutch completion and egg-laying dates.
+  - `clutch_completion` column added, with probabilities based on species.
+  - `date_egg` column added, calculated relative to the capture date for successful clutches.
+- **Advanced Health Status Modeling**: Health status is now dynamically calculated based on a combination of factors:
+  - Body mass relative to species-specific means.
+  - Colony-based "stress factors" that impact health thresholds.
+  - Species-specific fragility modifiers.
+- **Longitudinal Resight Duplication**: The script now simulates longitudinal studies by creating "resighted" penguin records.
+  - Duplicates a configurable percentage of records.
+  - Advances the `capture_date` and `age_group` for resighted penguins.
+  - Applies slight "drift" to biometric measurements over time.
+
+**🛠️ Improvements**
+
+- **Refined Messiness Injection**: The `inject_mess` function is more sophisticated, adding new types of data corruption:
+  - More plausible outliers for biometric measurements, constrained within biological bounds.
+  - A wider variety of typos and invalid formats for categorical data (`sex`, `age_group`, `colony_id`).
+  - Corrupted and invalid date formats.
+- **Ecological Weighting**: Penguin generation now uses weighted probabilities for colony assignment and age groups, creating a more realistic population distribution.
+- **Dedicated Species Missingness**: A new function specifically injects `NaN` values into the `species` column to better simulate a common field data issue.
+- **Study Name Generation**: A `study_name` (e.g., `PAPRI2023`) is now generated based on the capture year, mimicking real project identifiers.
 
 ---
 
@@ -120,7 +145,24 @@ The goal was not just to replicate a dataset — but to simulate real-world cons
 <details>
 <summary>⚙️ Project Structure</summary>
 
-
+```
+dirty_birds_data_generator/
+│
+├── .gitignore                  # Specifies files and directories to be ignored by Git.
+│
+├── penguin_synthetic_generator_v0.3.0.py  # The core data generation script.
+│
+├── pytests/                      # Directory containing all tests for the project.
+│   └── test_penguin_generator.py # Pytest suite to validate the generator's output.
+│
+├── README.md                   # This documentation file.
+│
+├── requirements.txt            # (Recommended) Lists Python dependencies for the project.
+│
+└── *.csv                       # Generated output files (ignored by .gitignore).
+    ├── synthetic_penguins_v3.5_clean.csv # The clean, analysis-ready dataset.
+    └── synthetic_penguins_v3.5.csv       # The messy dataset with injected errors.
+```
 
 </details>
 
