@@ -1,5 +1,5 @@
 <file name=0 path=/Users/garrettschumacher/Documents/git_repos/dirty_birds_data_generator/README.md><p align="center">
-  <img src="dark_logo_banner.png" width="1000"/>
+  <img src="img/dirty-birds-generator.png" width="1000"/>
   <br>
   <em>Palmer Penguins Data Generator + QA Framework</em>
 </p>
@@ -8,7 +8,7 @@
   <img alt="Python Version" src="https://img.shields.io/badge/python-3.8+-blue.svg">
   <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue">
   <img alt="Status" src="https://img.shields.io/badge/status-alpha-lightgrey">
-  <img alt="Version" src="https://img.shields.io/badge/version-v0.3.0-blueviolet">
+  <img alt="Version" src="https://img.shields.io/badge/version-v0.4.0-blueviolet">
 </p>
 
 ---
@@ -55,10 +55,14 @@ Dirty Birds simulates a realistic penguin tagging and monitoring study with:
     source venv/bin/activate  # or venv\Scripts\activate on Windows
     pip install -r requirements.txt
     ```
-3.	**Run the generator (default config, clean data)**
+3.	**Run the generator**
 
     ```bash
-    python penguin_synthetic_generator_v0.3.0.py
+    # Run with default settings (moderate mess)
+    python penguin_synthetic_generator_v0.4.0.py
+
+    # Run with heavy messiness for stress-testing
+    python penguin_synthetic_generator_v0.4.0.py --mess-level heavy
     ```
 
 </details>
@@ -69,11 +73,11 @@ Dirty Birds simulates a realistic penguin tagging and monitoring study with:
 
 This repository contains the core components for generating and testing synthetic ecological datasets, specifically focused on penguin tracking studies:
 
-- **`penguin_synthetic_generator_v0.3.0.py`**  
-  The main generator script. Outputs clean and messy datasets simulating penguin tagging records, including longitudinal resight logic.
+- **`penguin_synthetic_generator_v0.4.0.py`**  
+  The main generator script, now with CLI arguments for easy configuration. Outputs clean and messy datasets simulating penguin tagging records, including longitudinal resight logic.
 
 - **`tests/`**  
-  A minimal test suite to validate output structure, missing values, and column integrity.
+  A minimal `pytest` suite to validate output structure, missing values, and column integrity.
 
 ---
 
@@ -101,37 +105,48 @@ The goal was not just to replicate a dataset — but to simulate real-world cons
 <details>
 <summary><strong>🫆 Version Release Notes</strong></summary>
 
-### ✅ v0.3.0 (Current)
+### ✅ v0.4.0 (Current)
 
-This version introduces significant enhancements to the data generation logic, focusing on deeper ecological realism and more complex data quality challenges.
+This version refactors the script for improved usability and robustness, introducing command-line arguments to replace hardcoded configurations.
 
 **✨ New Features**
 
-- **Clutch & Egg-Laying Logic**: The generator now simulates clutch completion and egg-laying dates.
-  - `clutch_completion` column added, with probabilities based on species.
-  - `date_egg` column added, calculated relative to the capture date for successful clutches.
-- **Advanced Health Status Modeling**: Health status is now dynamically calculated based on a combination of factors:
-  - Body mass relative to species-specific means.
-  - Colony-based "stress factors" that impact health thresholds.
-  - Species-specific fragility modifiers.
-- **Longitudinal Resight Duplication**: The script now simulates longitudinal studies by creating "resighted" penguin records.
-  - Duplicates a configurable percentage of records.
-  - Advances the `capture_date` and `age_group` for resighted penguins.
-  - Applies slight "drift" to biometric measurements over time.
+- **Command-Line Interface (CLI)**: The generator is now configurable via CLI arguments, making it easier to use in automated workflows and for experimentation.
+  - `--mess-level`: Control the intensity of data errors (`none`, `light`, `moderate`, `heavy`).
+  - `--num-penguins`: Specify the number of penguins to generate.
+  - `--clean-output` / `--messy-output`: Set custom filenames for the output files.
 
 **🛠️ Improvements**
 
-- **Refined Messiness Injection**: The `inject_mess` function is more sophisticated, adding new types of data corruption:
-  - More plausible outliers for biometric measurements, constrained within biological bounds.
-  - A wider variety of typos and invalid formats for categorical data (`sex`, `age_group`, `colony_id`).
-  - Corrupted and invalid date formats.
-- **Ecological Weighting**: Penguin generation now uses weighted probabilities for colony assignment and age groups, creating a more realistic population distribution.
-- **Dedicated Species Missingness**: A new function specifically injects `NaN` values into the `species` column to better simulate a common field data issue.
-- **Study Name Generation**: A `study_name` (e.g., `PAPRI2023`) is now generated based on the capture year, mimicking real project identifiers.
+- **Code Refactoring**: The main generation logic has been wrapped in a `main()` function and uses `argparse` for clean argument handling.
+- **Bug Fixes**: Corrected a variable naming issue that caused messiness injection to operate on an incorrect DataFrame, improving stability and ensuring messiness is applied as intended.
 
 ---
 
-### 🔮 v0.4.0 (Planned)
+<details>
+<summary><strong>Past Release: v0.3.0</strong></summary>
+<br>
+
+> This version introduced significant enhancements to the data generation logic, focusing on deeper ecological realism and more complex data quality challenges.
+>
+> **✨ New Features**
+>
+> - **Clutch & Egg-Laying Logic**: Simulated clutch completion and egg-laying dates.
+> - **Advanced Health Status Modeling**: Dynamically calculated health status based on body mass, colony stress, and species fragility.
+> - **Longitudinal Resight Duplication**: Created "resighted" penguin records to simulate longitudinal studies.
+>
+> **🛠️ Improvements**
+>
+> - **Refined Messiness Injection**: Added more sophisticated and plausible data corruption.
+> - **Ecological Weighting**: Used weighted probabilities for colony and age group assignment.
+> - **Dedicated Species Missingness**: Added a function to specifically inject `NaN` values into the `species` column.
+> - **Study Name Generation**: Generated `study_name` based on the capture year.
+
+</details>
+
+---
+
+### 🔮 v0.5.0 (Planned)
 
 (more robust tagging systems, yaml configuration<move to an agnostic system that can generate any species style data>)
 
@@ -142,12 +157,12 @@ This version introduces significant enhancements to the data generation logic, f
 <details>
 <summary>⚙️ Project Structure</summary>
 
-```
+```text
 dirty_birds_data_generator/
 │
-├── .gitignore                  # Specifies files and directories to be ignored by Git.
+├── .gitignore                  # Specifies files to be ignored by Git.
 │
-├── penguin_synthetic_generator_v0.3.0.py  # The core data generation script.
+├── penguin_synthetic_generator_v0.4.0.py  # The core data generation script.
 │
 ├── pytests/                      # Directory containing all tests for the project.
 │   └── test_penguin_generator.py # Pytest suite to validate the generator's output.
@@ -243,15 +258,43 @@ ___
 
 ### ▶️ CLI Usage
 
-The generator is run directly from the command line. To run the script with its default configuration, simply execute the Python file. This will generate `synthetic_penguins_v3.5_clean.csv` and `synthetic_penguins_v3.5.csv`.
+The generator is controlled via command-line arguments, allowing for easy customization without editing the script.
+
+#### Basic Execution
+
+To run the script with its default configuration (`moderate` mess, 4500 penguins), simply execute the Python file:
 
 ```bash
-python penguin_synthetic_generator_v0.3.0.py
+python penguin_synthetic_generator_v0.4.0.py
 ```
 
-#### Customizing the Output
+This will generate `synthetic_penguins_v3.5_clean.csv` and `synthetic_penguins_v3.5.csv`.
 
-Currently, all configuration is handled via constants within the `penguin_synthetic_generator_v0.3.0.py` script. To change the output, you must edit the file directly. Key parameters to modify include `N_PENGUINS`, `TAGGED_PERCENTAGE`, the `mess_level` passed to `inject_mess()`, and the `duplicate_rate` for resights.
+#### Command-Line Arguments
+
+You can customize the output using the following arguments. For a full list, run `python penguin_synthetic_generator_v0.4.0.py --help`.
+
+| Argument | Description | Default | Example |
+|---|---|---|---|
+| `--mess-level` | Sets the intensity of injected errors. | `moderate` | `heavy` |
+| `--num-penguins` | Sets the base number of penguins to generate. | `4500` | `100` |
+| `--duplicate-rate` | Sets the proportion of tagged penguins to resight. | `0.45` | `0.75` |
+| `--species-missing-rate` | Sets the proportion of records with missing species. | `0.03` | `0.1` |
+| `--mislabel-rate` | Proportion of records to create as mislabeled duplicates. | `0.0` | `0.02` |
+| `--clean-output` | Specifies the filename for the clean data. | `synthetic_penguins_v3.5_clean.csv` | `clean_data.csv` |
+| `--messy-output` | Specifies the filename for the messy data. | `synthetic_penguins_v3.5.csv` | `messy_data.csv` |
+
+**Examples:**
+
+1.  **Generate a dataset with heavy messiness and a high resight rate:**
+    ```bash
+    python penguin_synthetic_generator_v0.4.0.py --mess-level heavy --duplicate-rate 0.8
+    ```
+
+2.  **Generate a small, clean test dataset for quick validation:**
+    ```bash
+    python penguin_synthetic_generator_v0.4.0.py --num-penguins 100 --mess-level none
+    ```
 
 ## 🧪 Testing and Validation Guide
 
